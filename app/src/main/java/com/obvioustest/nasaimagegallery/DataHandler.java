@@ -1,14 +1,21 @@
 package com.obvioustest.nasaimagegallery;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,46 +27,48 @@ class DataHandler {
     public DataHandler(Context context) {
         this.context = context;
 
-        try {
-            JSONObject obj = new JSONObject(loadJSONFromAsset());
-            JSONArray arry = obj.getJSONArray("title");
+        JSONArray arry = (JSONArray) loadJSONFromAsset();
 
 
-            for (int i = 0; i < arry.length(); i++) {
-                JSONObject object = arry.getJSONObject(i);
-                Log.d("Details-->", object.getString("title"));
+        for (int i = 0; i < arry.size(); i++) {
+            JSONObject object = (JSONObject) arry.get(i);
+            Log.d("Details-->", (String) object.get("title"));
 
-                List = new HashMap<String, String>();
-                List.put("title", object.getString("title"));
-                List.put("copyright", object.getString("copyright"));
-                List.put("hdurl", object.getString("hdurl"));
-                List.put("date", object.getString("date"));
-                List.put("emplanation", object.getString("emplanation"));
-                List.put("media_type", object.getString("media_type"));
-                List.put("service_version", object.getString("service_version"));
-                List.put("url", object.getString("url"));
+            List = new HashMap<String, String>();
+            List.put("title", (String) object.get("title"));
+            List.put("copyright", (String) object.get("copyright"));
+            List.put("hdurl", (String) object.get("hdurl"));
+            List.put("date", (String) object.get("date"));
+            List.put("emplanation", (String) object.get("emplanation"));
+            List.put("media_type", (String) object.get("media_type"));
+            List.put("service_version", (String) object.get("service_version"));
+            List.put("url", (String) object.get("url"));
 
 
-                DataList.add(List);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+            DataList.add(List);
         }
     }
 
+    public String getThumbnailURL(int pos) {
+        return DataList.get(pos).get("url");
+    }
 
-    public String loadJSONFromAsset() {
-        String json = null;
+    public ArrayList getRawData() {
+        return DataList;
+    }
+
+    private Object loadJSONFromAsset() {
+        Object json = null;
         try {
-            InputStream is = context.getAssets().open("data.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
+
+            Reader reader = new InputStreamReader(context.getAssets().open("data.json"));
+
+            json = new JSONParser().parse(reader);
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return json;
     }
