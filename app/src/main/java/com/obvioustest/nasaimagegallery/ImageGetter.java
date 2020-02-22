@@ -1,29 +1,38 @@
 package com.obvioustest.nasaimagegallery;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import pl.droidsonroids.gif.GifImageView;
 
-class ImageGetter extends AsyncTask<String, Void, Bitmap> {
-    GifImageView imageView;
+class ImageGetter extends AsyncTask<Integer, Bitmap, Bitmap> {
+    public static ArrayList<Bitmap> image = new ArrayList<>();
+    public static boolean isReady = false;
+    private ArrayList<HashMap<String, String>> data;
 
-    public ImageGetter(GifImageView imageView) {
-        this.imageView = imageView;
+    public ImageGetter(Context context) {
+        data = (new DataHandler(context).getRawData());
     }
 
-    protected Bitmap doInBackground(String... urls) {
-        String urlOfImage = urls[0];
+
+    @Override
+    protected Bitmap doInBackground(Integer... integers) {
+        String urlOfImage = data.get(integers[0]).get("url");
         Bitmap img = null;
         try {
             InputStream is = new URL(urlOfImage).openStream();
-
             img = BitmapFactory.decodeStream(is);
+            image.add(integers[0], img);
+            Log.e("url", String.valueOf(integers[0]));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -31,7 +40,11 @@ class ImageGetter extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
-        imageView.setImageBitmap(result);
+        if (data.size() == image.size()) {
+            isReady = true;
+        }
+
     }
 }
+
 

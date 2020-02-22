@@ -23,12 +23,15 @@ public class SplashScreen extends AppCompatActivity {
             // Permission is not granted
 
         }
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
 
                 startActivity(new Intent(getApplicationContext(), ImageHome.class));
+                //  finish();
             }
         }, 5000);
+
     }
 }

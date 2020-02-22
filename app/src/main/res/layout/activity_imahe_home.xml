@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ImageHome">
 
 
@@ -15,9 +16,9 @@
             android:columnWidth="100dp"
             android:gravity="center"
             android:horizontalSpacing="10dp"
-            android:numColumns="auto_fit"
             android:scrollbars="vertical"
-            android:stretchMode="columnWidth"
+            android:outlineProvider="bounds"
+            android:outlineSpotShadowColor="@android:color/black"
             android:verticalSpacing="10dp" />
 
 </RelativeLayout>

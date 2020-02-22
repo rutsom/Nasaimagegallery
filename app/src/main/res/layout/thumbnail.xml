@@ -1,16 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.skydoves.elasticviews.ElasticLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/elasticlayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="200dp"
+    app:layout_backgroundColor="@android:color/transparent"
+    app:layout_duration="500"
+    app:layout_scale="0.85">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/thumbnail_card"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/boder"
+        android:hapticFeedbackEnabled="true"
+        app:cardCornerRadius="10dp">
 
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/img_thumbnail"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:src="@drawable/loading" />
-</LinearLayout>
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/img_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+
+            android:layout_gravity="center"
+            android:layout_marginBottom="0dp"
+
+            android:scaleType="fitCenter"
+            android:src="@drawable/loading" />
+
+        <TextView
+            android:id="@+id/thumbnail_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+</com.skydoves.elasticviews.ElasticLayout>
