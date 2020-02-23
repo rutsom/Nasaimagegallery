@@ -1,29 +1,10 @@
 package com.obvioustest.nasaimagegallery;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.skydoves.elasticviews.ElasticAnimation;
-import com.skydoves.elasticviews.ElasticFinishListener;
-import com.skydoves.elasticviews.ElasticLayout;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import pl.droidsonroids.gif.GifImageView;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ImageHome extends AppCompatActivity {
 
@@ -42,7 +23,6 @@ public class ImageHome extends AppCompatActivity {
             public void run() {
                 for (int i = 0; i < (new DataHandler(getApplicationContext()).getRawData().size()); i++) {
                     new ImageGetter(getApplicationContext(), activity, adapter).execute(i);
-
                 }
 
 

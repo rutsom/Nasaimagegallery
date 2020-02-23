@@ -1,25 +1,17 @@
 package com.obvioustest.nasaimagegallery;
 
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.util.Log;
-
-
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -45,7 +37,7 @@ class DataHandler {
             list.put("copyright", (String) object.get("copyright"));
             list.put("hdurl", (String) object.get("hdurl"));
             list.put("date", (String) object.get("date"));
-            list.put("emplanation", (String) object.get("emplanation"));
+            list.put("explanation", (String) object.get("explanation"));
             list.put("media_type", (String) object.get("media_type"));
             list.put("service_version", (String) object.get("service_version"));
             list.put("url", (String) object.get("url"));

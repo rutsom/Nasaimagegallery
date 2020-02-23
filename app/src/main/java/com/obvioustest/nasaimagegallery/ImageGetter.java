@@ -6,14 +6,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ImageView;
 
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import pl.droidsonroids.gif.GifImageView;
 
 class ImageGetter extends AsyncTask<Integer, Bitmap, Bitmap> {
     public static ArrayList<Bitmap> image = new ArrayList<>();
