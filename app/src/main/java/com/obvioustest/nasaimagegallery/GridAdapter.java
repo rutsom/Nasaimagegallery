@@ -46,7 +46,11 @@ public class GridAdapter extends BaseAdapter {
     @Override
     public int getCount() {
 
-        return this.imageList.size();
+        if (imgList.size() < 4) {
+            return 4;
+        } else {
+            return imgList.size();
+        }
 
     }
 
@@ -86,7 +90,7 @@ public class GridAdapter extends BaseAdapter {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ElasticAnimation.Builder().setView(v).setScaleX(0.95f)
+                new ElasticAnimation.Builder().setView(v).setScaleX(0.98f)
                         .setScaleY(0.98f).setDuration(500)
                         .setOnFinishListener(new ElasticFinishListener() {
                             @Override
@@ -98,7 +102,8 @@ public class GridAdapter extends BaseAdapter {
             }
         });
         ((TextView) cardView.findViewById(R.id.thumbnail_title)).setText(imageList.get(position).get("title"));
-        if (imgList.size() == (new DataHandler(context).getRawData().size())) {
+
+        if (position <= imgList.size() - 1) {
             GifImageView imageView = (GifImageView) cardView.findViewById(R.id.img_thumbnail);
             imageView.setImageBitmap(imgList.get(position));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);

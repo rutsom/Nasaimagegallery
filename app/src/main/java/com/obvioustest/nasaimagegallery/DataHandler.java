@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -16,13 +17,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 
 class DataHandler {
     private Context context;
     private ArrayList<HashMap<String, String>> DataList = new ArrayList<HashMap<String, String>>();
-    private HashMap<String, String> List;
 
     public DataHandler(Context context) {
         this.context = context;
@@ -30,30 +35,44 @@ class DataHandler {
         JSONArray arry = (JSONArray) loadJSONFromAsset();
 
 
+        assert arry != null;
         for (int i = 0; i < arry.size(); i++) {
             JSONObject object = (JSONObject) arry.get(i);
-            Log.d("Details-->", (String) object.get("title"));
+            // Log.d("Details-->", (String) object.get("title"));
 
-            List = new HashMap<String, String>();
-            List.put("title", (String) object.get("title"));
-            List.put("copyright", (String) object.get("copyright"));
-            List.put("hdurl", (String) object.get("hdurl"));
-            List.put("date", (String) object.get("date"));
-            List.put("emplanation", (String) object.get("emplanation"));
-            List.put("media_type", (String) object.get("media_type"));
-            List.put("service_version", (String) object.get("service_version"));
-            List.put("url", (String) object.get("url"));
+            HashMap<String, String> list = new HashMap<String, String>();
+            list.put("title", (String) object.get("title"));
+            list.put("copyright", (String) object.get("copyright"));
+            list.put("hdurl", (String) object.get("hdurl"));
+            list.put("date", (String) object.get("date"));
+            list.put("emplanation", (String) object.get("emplanation"));
+            list.put("media_type", (String) object.get("media_type"));
+            list.put("service_version", (String) object.get("service_version"));
+            list.put("url", (String) object.get("url"));
 
 
-            DataList.add(List);
+            DataList.add(list);
         }
+        Collections.sort(DataList, new Comparator<HashMap<String, String>>() {
+            @Override
+            public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    Date d1, d2;
+                    d1 = sdf.parse(o1.get("date"));
+                    d2 = sdf.parse(o2.get("date"));
+                    return d2.compareTo(d1);
+                } catch (java.text.ParseException e) {
+                    e.printStackTrace();
+                }
+
+                return 0;
+            }
+        });
     }
 
-    public String getThumbnailURL(int pos) {
-        return DataList.get(pos).get("url");
-    }
 
-    public ArrayList getRawData() {
+    ArrayList getRawData() {
         return DataList;
     }
 

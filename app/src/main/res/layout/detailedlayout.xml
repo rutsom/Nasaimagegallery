@@ -1,35 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detailed_card"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="8dp"
+    android:hapticFeedbackEnabled="true"
+    android:scrollbars="vertical"
+    app:cardCornerRadius="10dp">
 
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/detailed_image"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="338dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="390dp"
-        app:srcCompat="@drawable/loading" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <me.biubiubiu.justifytext.library.JustifyTextView
-        android:id="@+id/detailed_text"
-        android:layout_width="match_parent"
-        android:layout_height="392dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="0dp"
-        android:textSize="35sp" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="0.4">
 
-    <TextView
-        android:id="@+id/detailed_title"
-        android:layout_width="409dp"
-        android:layout_height="52dp"
-        android:layout_alignBottom="@+id/detailed_image"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="283dp" />
-</RelativeLayout>
+            <ImageView
+                android:id="@+id/detailed_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/loading">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/detailed_title"
+                android:layout_width="match_parent"
+                android:layout_height="25sp"
+
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="0dp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/detailed_explanation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6" />
+
+        <TextView
+            android:id="@+id/detailed_copyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.005" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

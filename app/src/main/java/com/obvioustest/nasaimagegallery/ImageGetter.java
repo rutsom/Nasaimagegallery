@@ -1,5 +1,6 @@
 package com.obvioustest.nasaimagegallery;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,9 +19,14 @@ class ImageGetter extends AsyncTask<Integer, Bitmap, Bitmap> {
     public static ArrayList<Bitmap> image = new ArrayList<>();
     public static boolean isReady = false;
     private ArrayList<HashMap<String, String>> data;
+    private GridAdapter gridAdapter;
 
-    public ImageGetter(Context context) {
+    private Activity activity;
+
+    public ImageGetter(Context context, Activity activity, GridAdapter adapter) {
+        this.activity = activity;
         data = (new DataHandler(context).getRawData());
+        gridAdapter = adapter;
     }
 
 
@@ -40,9 +46,13 @@ class ImageGetter extends AsyncTask<Integer, Bitmap, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
-        if (data.size() == image.size()) {
-            isReady = true;
-        }
+        GridAdapter.setImglist((ImageGetter.image));
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                gridAdapter.notifyDataSetChanged();
+            }
+        });
 
     }
 }
