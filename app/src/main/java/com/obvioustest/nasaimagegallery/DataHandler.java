@@ -21,17 +21,16 @@ class DataHandler {
     private Context context;
     private ArrayList<HashMap<String, String>> DataList = new ArrayList<HashMap<String, String>>();
 
-    public DataHandler(Context context) {
+    DataHandler(Context context) {
         this.context = context;
 
         JSONArray arry = (JSONArray) loadJSONFromAsset();
 
 
         assert arry != null;
+        //converting json to Arraylist
         for (int i = 0; i < arry.size(); i++) {
             JSONObject object = (JSONObject) arry.get(i);
-            // Log.d("Details-->", (String) object.get("title"));
-
             HashMap<String, String> list = new HashMap<String, String>();
             list.put("title", (String) object.get("title"));
             list.put("copyright", (String) object.get("copyright"));
@@ -45,6 +44,7 @@ class DataHandler {
 
             DataList.add(list);
         }
+        //sorting data by date
         Collections.sort(DataList, new Comparator<HashMap<String, String>>() {
             @Override
             public int compare(HashMap<String, String> o1, HashMap<String, String> o2) {
@@ -68,12 +68,12 @@ class DataHandler {
         return DataList;
     }
 
+    //json file reader
     private Object loadJSONFromAsset() {
         Object json = null;
+
         try {
-
             Reader reader = new InputStreamReader(context.getAssets().open("data.json"));
-
             json = new JSONParser().parse(reader);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -81,6 +81,7 @@ class DataHandler {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         return json;
     }
 }

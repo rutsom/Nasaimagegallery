@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 
@@ -26,7 +26,7 @@ public class GridAdapter extends BaseAdapter {
     private android.content.Context context;
     private ArrayList<HashMap<String, String>> imageList;
 
-    // Step 1
+    // Adapter Constructor
     public GridAdapter(Context context) {
         this.context = context;
         this.imageList = (new DataHandler(context).getRawData());
@@ -41,8 +41,10 @@ public class GridAdapter extends BaseAdapter {
     public int getCount() {
 
         if (imgList.size() < 4) {
+            //for Showing a basic skeleton
             return 4;
         } else {
+            //Population new Cards
             return imgList.size();
         }
 
@@ -50,7 +52,6 @@ public class GridAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-
         return position;
     }
 
@@ -63,16 +64,9 @@ public class GridAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        Holder holder;
         if (convertView == null) {
-
-            convertView = View.inflate(context, R.layout.thumbnail, null);
-
+            convertView = View.inflate(context, R.layout.thumbnail_layout, null);
         }
-
-        String singleImageurl = getItem(position);
-        Log.d("thumbnail", singleImageurl);
-        holder = new Holder();
         CardView cardView = convertView.findViewById(R.id.thumbnail_card);
 
         cardView.setOnClickListener(new View.OnClickListener() {
@@ -83,11 +77,15 @@ public class GridAdapter extends BaseAdapter {
                         .setOnFinishListener(new ElasticFinishListener() {
                             @Override
                             public void onFinished() {
-                                Bundle paramiterBundle = new Bundle();
-                                paramiterBundle.putInt("item", position);
-                                Intent DetailedviewIntent = new Intent(context, DetailedView.class);
-                                DetailedviewIntent.putExtra("item", position);
-                                context.startActivity(DetailedviewIntent);
+                                if (position <= imgList.size()) {
+                                    Bundle parameterBundle = new Bundle();
+                                    parameterBundle.putInt("item", position);
+                                    Intent DetailedIntent = new Intent(context, DetailedView.class);
+                                    DetailedIntent.putExtra("item", position);
+                                    context.startActivity(DetailedIntent);
+                                } else {
+                                    Toast.makeText(context, "wait for the image to load", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }).doAction();
 
@@ -99,17 +97,12 @@ public class GridAdapter extends BaseAdapter {
             GifImageView imageView = cardView.findViewById(R.id.img_thumbnail);
             imageView.setImageBitmap(imgList.get(position));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            holder.imageView = imageView;
+
         }
-        convertView.setTag(holder);
 
 
         return convertView;
     }
 
-
-    class Holder extends Object {
-        GifImageView imageView;
-    }
 
 }

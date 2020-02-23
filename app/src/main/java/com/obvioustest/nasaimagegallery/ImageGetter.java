@@ -1,5 +1,6 @@
 package com.obvioustest.nasaimagegallery;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,14 +15,14 @@ import java.util.HashMap;
 
 
 class ImageGetter extends AsyncTask<Integer, Bitmap, Bitmap> {
-    public static ArrayList<Bitmap> image = new ArrayList<>();
-    public static boolean isReady = false;
+    static ArrayList<Bitmap> image = new ArrayList<>();
     private ArrayList<HashMap<String, String>> data;
     private GridAdapter gridAdapter;
 
+    @SuppressLint("StaticFieldLeak")
     private Activity activity;
 
-    public ImageGetter(Context context, Activity activity, GridAdapter adapter) {
+    ImageGetter(Context context, Activity activity, GridAdapter adapter) {
         this.activity = activity;
         data = (new DataHandler(context).getRawData());
         gridAdapter = adapter;

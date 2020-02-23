@@ -1,5 +1,6 @@
 package com.obvioustest.nasaimagegallery;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,8 @@ class DetailedViewAdapter extends RecyclerView.Adapter<DetailedViewAdapter.viewH
     private ArrayList<HashMap<String, String>> dataList;
     private Context context;
 
-    public DetailedViewAdapter(Context context) {
+    //Adapter Constructor
+    DetailedViewAdapter(Context context) {
         dataList = (new DataHandler(context)).getRawData();
         this.context = context;
 
@@ -26,29 +28,37 @@ class DetailedViewAdapter extends RecyclerView.Adapter<DetailedViewAdapter.viewH
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.detailedlayout, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.detailed_layout, parent, false);
         viewHolder holder = new viewHolder(view);
         return holder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
+        //Assignment of Data
         holder.title.setText(dataList.get(position).get("title"));
-        holder.copyright.setText("Copyright: " + (dataList.get(position).get("copyright") != null ? dataList.get(position).get("copyright") : ""));
-        // Toast.makeText(context,dataList.get(position).get("explanation"),Toast.LENGTH_LONG).show();
+        holder.copyright.setText(((dataList.get(position).get("copyright") != null ?
+                ("Copyright: " + dataList.get(position).get("copyright") + " / ") : " ") + " Date: " +
+                dataList.get(position).get("date")));
         holder.explanation.setText(dataList.get(position).get("explanation"));
-        holder.image.setImageBitmap(ImageGetter.image.get(position));
+        if (position <= ImageGetter.image.size() - 1) {
+            holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            holder.image.setImageBitmap(ImageGetter.image.get(position));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return ImageGetter.image.size();
+        return dataList.size();
     }
 
-    public class viewHolder extends RecyclerView.ViewHolder {
-        public TextView title, explanation, copyright;
-        public ImageView image;
-        public viewHolder(@NonNull View itemView) {
+    //Item Holder
+    class viewHolder extends RecyclerView.ViewHolder {
+        TextView title, explanation, copyright;
+        ImageView image;
+
+        viewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.detailed_title);
             explanation = itemView.findViewById(R.id.detailed_explanation);
