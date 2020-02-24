@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 
@@ -24,12 +23,12 @@ import pl.droidsonroids.gif.GifImageView;
 public class GridAdapter extends BaseAdapter {
     private static ArrayList<Bitmap> imgList;
     private android.content.Context context;
-    private ArrayList<HashMap<String, String>> imageList;
+    private ArrayList<HashMap<String, String>> DataList;
 
     // Adapter Constructor
     public GridAdapter(Context context) {
         this.context = context;
-        this.imageList = (new DataHandler(context).getRawData());
+        this.DataList = (new DataHandler(context).getRawData());
         imgList = new ArrayList<>();
     }
 
@@ -39,12 +38,11 @@ public class GridAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-
-        if (imgList.size() < 4) {
             //for Showing a basic skeleton
+        if (imgList.size() < 4) {
             return 4;
         } else {
-            //Population new Cards
+            //populate card one by one
             return imgList.size();
         }
 
@@ -55,10 +53,9 @@ public class GridAdapter extends BaseAdapter {
         return position;
     }
 
-
     @Override
     public String getItem(int position) {
-        return imageList.get(position).get("url");
+        return DataList.get(position).get("url");
     }
 
 
@@ -68,32 +65,28 @@ public class GridAdapter extends BaseAdapter {
             convertView = View.inflate(context, R.layout.thumbnail_layout, null);
         }
         CardView cardView = convertView.findViewById(R.id.thumbnail_card);
+        ((TextView) cardView.findViewById(R.id.thumbnail_title)).setText(DataList.get(position).get("title"));
 
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new ElasticAnimation.Builder().setView(v).setScaleX(0.98f)
-                        .setScaleY(0.98f).setDuration(500)
-                        .setOnFinishListener(new ElasticFinishListener() {
-                            @Override
-                            public void onFinished() {
-                                if (position <= imgList.size()) {
+        //load image only if image in downloaded from the cloud
+        if (position <= imgList.size() - 1) {
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new ElasticAnimation.Builder().setView(v).setScaleX(0.98f)
+                            .setScaleY(0.98f).setDuration(500)
+                            .setOnFinishListener(new ElasticFinishListener() {
+                                @Override
+                                public void onFinished() {
                                     Bundle parameterBundle = new Bundle();
                                     parameterBundle.putInt("item", position);
                                     Intent DetailedIntent = new Intent(context, DetailedView.class);
                                     DetailedIntent.putExtra("item", position);
                                     context.startActivity(DetailedIntent);
-                                } else {
-                                    Toast.makeText(context, "wait for the image to load", Toast.LENGTH_SHORT).show();
                                 }
-                            }
-                        }).doAction();
+                            }).doAction();
 
-            }
-        });
-        ((TextView) cardView.findViewById(R.id.thumbnail_title)).setText(imageList.get(position).get("title"));
-
-        if (position <= imgList.size() - 1) {
+                }
+            });
             GifImageView imageView = cardView.findViewById(R.id.img_thumbnail);
             imageView.setImageBitmap(imgList.get(position));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
